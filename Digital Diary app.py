@@ -53,6 +53,14 @@ def add_entry(entries):
     date = input("Entered (e.g. 29/01/2025): ")
     note = input("What do you want to record? ")
     entries.append({"date": date, "note": note})
+       print("Choose your mood:")
+    print("1. 🙂 Happy\n2. 😐 Neutral\n3. 😢 Sad")
+    mood_choice = input("Enter number (1-3): ")
+
+    mood_map = {"1": "🙂", "2": "😐", "3": "😢"}
+    mood = mood_map.get(mood_choice, "😐")
+
+    entries.append({"date": date, "note": note, "mood": mood})
     print("Entry added.")
 
 
@@ -61,6 +69,12 @@ def view_entries(entries):
     if len(entries) == 0:
         print("No entries yet.")
         return
+    sort_choice = input("Sort by date? (y/n): ").lower()
+    if sort_choice == "y":
+        try:
+            entries.sort(key=lambda x: datetime.strptime(x['date'], "%d/%m/%Y"))
+        except ValueError:
+            print("Some dates are not in the format DD/MM/YYYY. Skipping sort.")
 
     print("=== All Entries ===")
     for i, entry in enumerate(entries, 1):
